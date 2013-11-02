@@ -1,0 +1,131 @@
+;---------------
+;
+; comms
+;
+to check
+clearcom
+send $ff if recc = 23 [output true]
+carefully [start-comms][]
+send $ff
+output recc = 23 
+end
+
+to dump :addr :len
+let [res []]
+if :len = 0 [make "len 1]
+make "len 16 * int (:len + 15) / 16
+let [l rl :addr :len]
+repeat :len / 16
+ [make "res se hw :addr "-
+  repeat 16 [make "res se :res hb first :l make "l bf :l]
+  print :res
+  make "addr :addr + 16]
+end
+
+to start
+send $fc
+end
+
+to rl :addr :count
+let [res []]
+clearcom
+send $fe
+send byte0 :addr send byte1 :addr
+send byte2 :addr send byte3 :addr
+send byte0 :count send byte1 :count
+dotimes [i :count][make "res se :res recc]
+output :res
+end
+
+to erase-sector :sector
+clearcom
+send $fa
+send :sector
+ignore trecc 400
+end
+
+
+to wfl :sector :addr :l
+let [count 0]
+clearcom
+loop
+ [if empty? :l [stop]
+  make "count min 256 count :l
+  send $fb
+  send :sector
+  send byte0 :addr send byte1 :addr
+  send byte2 :addr send byte3 :addr
+  send :count
+  dotimes [i :count][send first :l make "l bf :l]
+  ignore trecc 400
+  make "addr :addr + :count]
+end
+
+
+;---------------
+;
+; low level comms
+;
+
+to send :n
+.send :n
+end
+
+to recc
+output trecc 100
+end
+
+to trecc :n
+let [c 0 starttime timer]
+loop 
+ [make "c .recc
+  if :c > -1 [output :c]
+  if (timer - :starttime) > :n [output -1]]
+end
+
+to start-comms
+let [os getproperty "os.name]
+if windows? [open-windows-port stop]
+if member? "Linux :os [open-linux-port stop]
+open-mac-port
+end
+
+to open-named-port :name
+openport :name
+setportparams 19200 8 1 0
+end
+
+to open-windows-port
+usbinit
+let [names portnames $0d28 $0204]
+dolist [i :names]
+ [carefully [openport :i][]
+  if not porthandle = 0 [make "portname :i setportparams 9600 8 1 0 stop]]
+print "|dongle not found| stop
+end
+
+to open-mac-port
+let [port find-mac-port]
+if empty? :port [stop]
+openport :port
+ignore exec (word "|stty -f | :port "| 9600|)
+end
+
+to find-mac-port
+dolist [i files "/dev][if member? "cu.usbmodem :i [output :i]]
+output "
+end
+
+to open-linux-port
+let [port find-linux-port]
+if empty? :port [stop]
+openport :port
+ignore exec (word "|stty -f | :port "| 9600|)
+end
+
+to find-linux-port
+dolist [i files "/dev][if member? "ttyACM :i [output :i]]
+output "
+end
+
+define recv[][output .recc]

@@ -1,0 +1,20 @@
+to startup
+erfile "log.txt
+load "logo/compiler
+load "logo/decompiler
+load "logo/uartcomms
+if not name? "inited [make "inited true compiler-startup start-comms]
+end
+
+define byte0 [n][output logand :n $ff]
+define byte1 [n][output logand lsh :n -8 $ff]
+define byte2 [n][output logand lsh :n -16 $ff]
+define byte3 [n][output logand lsh :n -24 $ff]
+define hb [n][output hexw logand $ff :n 2]
+define hh [n][output hexw logand $ffff :n 4]
+define hw [n][output hexw logand $ffffffff :n 8]
+define .word [a b][output intern word :a :b]
+define ignore [n][]
+
+define rr [][reload startup]
+

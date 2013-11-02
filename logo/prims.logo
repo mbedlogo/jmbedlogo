@@ -1,0 +1,53 @@
+make "primdefs [
+stop c 0  output c 1
+call c 1
+run c 1
+runmacro c 1
+repeat c 2
+forever c 1
+if c 2
+ifelse c 3
+waituntil c 1
+gwrite c 2
+gread r 1
++ r -1
+- r -1
+* r -1
+/ r -1
+% r -1
+random r 1
+extend r 1
+= r -1
+!= r -1
+> r -1
+< r -1
+and r -1
+or r -1
+xor r -1
+not r 1
+lsl r 2
+g r 1  fl r 1
+readb r 1  writeb c 2
+readh r 1  writeh c 2
+read r 1  write c 2
+;bset c 2
+;bclr c 2
+sp r 0
+]
+
+make "extdefs [
+utimer r 0  resetut c 0
+wait c 1  mwait c 1  uwait c 1
+time r 0  settime c 1
+malloc r 1  free c 0
+print c 1  prh c 1  prs c 1
+prn c 2  cr c 0
+led1on c 0  led1off c 0
+led2on c 0  led2off c 0
+led3on c 0  led3off c 0
+led4on c 0  led4off c 0
+alloff c 0
+spiwrite c 1
+ticks r 0
+pin20on c 0  pin20off c 0
+]
