@@ -4,7 +4,7 @@ call c 1
 run c 1
 runmacro c 1
 repeat c 2
-forever c 1
+loop c 1
 if c 2
 ifelse c 3
 waituntil c 1
