@@ -1,6 +1,6 @@
 to test
 let [n 0]
-repeat 5
+repeat 30
  [print :n
   make "n :n + 1234]
 end
