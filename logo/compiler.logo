@@ -90,7 +90,7 @@ loop [if empty? :list [output :*result*]
 end
 
 to setup-globals :list
-if word? :list [make "list (se bf :list)]
+if word? :list [make "list (se intern bf :list)]
 dolist [i :list]
  [add-name :i add-name .word "set :i
   add-name :i add-name .word "storein :i
@@ -503,7 +503,7 @@ run parse filetostring "logo/prims.logo
 setup-prims :primdefs
 setup-externals :extdefs
 setup-specials [( ) waituntil make let]
-put "|(| "outputs? true put "|)| "outputs? false
+put "|(| "outputs? true put "|)| "outputs? true
 put "make "outputs? false put "let "outputs? false
 setup-globals [n m]
 end
