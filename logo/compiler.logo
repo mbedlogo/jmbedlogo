@@ -238,18 +238,12 @@ end
 
 to pass2-funcall :item
 if equal? getp :item "type "ufun
-  [ifelse tailcall?
-    [add-and-count se "ufun-tail :item 3]
-    [add-and-count se "ufun :item 3]
+  [add-and-count se "ufun :item 3
    stop]
 if equal? getp :item "type "external
   [add-and-count se "external :item 2 stop]
 if getp :item "special? [run (se word "handle- :item) stop]
 add-and-count se "prim :item 1
-end
-
-to tailcall?
-output (and :name = :item :toplevel? empty? :body)
 end
 
 to command-check :item
@@ -358,9 +352,6 @@ selectq item 2 :item
       ufun        [add 8
                    add byte0 (getp :x "addr)
                    add byte1 (getp :x "addr)]
-;       ufun-tail [add 9 
-;                  add byte0 (getp :x "addr)
-;                  add byte1 (getp :x "addr)]
       external    [ifelse get :x "outputs? [add 11 add ext# :x][add 10 add ext# :x]]
       prim        [add prim# :x]]
 end
