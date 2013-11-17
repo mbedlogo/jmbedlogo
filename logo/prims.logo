@@ -39,7 +39,7 @@ make "extdefs [
 utimer r 0  resetut c 0
 wait c 1  mwait c 1  uwait c 1
 time r 0  settime c 1
-malloc r 1  free c 0
+malloc r 1  free c 1
 print c 1  prh c 1  prs c 1
 prn c 2  cr c 0
 led1on c 0  led1off c 0
